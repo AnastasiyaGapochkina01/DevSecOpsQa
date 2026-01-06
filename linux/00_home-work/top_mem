@@ -1,0 +1,4 @@
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root         617  0.0  3.9 1996160 36896 ?       Ssl  06:06   0:00 /usr/lib/snapd/snapd
+root         189  0.0  2.8 288952 27096 ?        SLsl 06:06   0:00 /sbin/multipathd -d -s
+root         754  0.0  2.4 110020 23116 ?        Ssl  06:06   0:00 /usr/bin/python3 /usr/share/unattended-upgrades/unattended-upgrade-shutdown --wait-for-signal
