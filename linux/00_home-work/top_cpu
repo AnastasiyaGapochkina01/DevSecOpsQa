@@ -1,0 +1,4 @@
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root        2427  100  0.1   6112  1728 pts/1    R+   06:26   0:02 yes
+root        2249  0.3  0.3   7740  3504 pts/1    S+   06:26   0:00 /bin/bash ./00_home-work.sh
+root           1  0.2  1.4  22544 13772 ?        Ss   06:06   0:02 /sbin/init
