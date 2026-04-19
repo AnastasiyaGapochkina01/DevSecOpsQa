@@ -1,0 +1,67 @@
+---
+- name: Create backup user and setup backup directory
+  hosts: all
+  become: yes
+  tasks:
+    - name: Create backuper user
+      user:
+        name: backuper
+        state: present
+        shell: /bin/bash
+        create_home: yes
+        home: /home/backuper
+
+    - name: Create /opt/backups directory with backuper ownership
+      file:
+        path: /opt/backups
+        state: directory
+        mode: '0755'
+        owner: backuper
+        group: backuper
+
+    - name: Create backup.sh script
+      copy:
+        content: |
+          #!/bin/bash
+          # Backup script for demo application
+          # Owner: backuper
+          
+          BACKUP_DIR="/opt/backups"
+          TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+          BACKUP_FILE="$BACKUP_DIR/backup_$TIMESTAMP.tar.gz"
+          
+          # Directories to backup (customize as needed)
+          SOURCE_DIRS=(
+              "/opt/demo_app"
+              "/etc/rsync.d"
+          )
+          
+          echo "Starting backup at $(date)"
+          echo "Creating backup file: $BACKUP_FILE"
+          
+          # Create backup archive
+          tar -czf "$BACKUP_FILE" "${SOURCE_DIRS[@]}" 2>/dev/null
+          
+          if [ $? -eq 0 ]; then
+              echo "Backup completed successfully: $BACKUP_FILE"
+              # Keep only last 7 backups
+              ls -t $BACKUP_DIR/backup_*.tar.gz 2>/dev/null | tail -n +8 | xargs rm -f 2>/dev/null
+          else
+              echo "Backup failed!"
+              exit 1
+          fi
+          
+          echo "Backup finished at $(date)"
+        dest: /opt/backups/backup.sh
+        mode: '0755'
+        owner: backuper
+        group: backuper
+
+    - name: Verify backuper can execute the script
+      stat:
+        path: /opt/backups/backup.sh
+      register: script_stat
+
+    - name: Display script permissions
+      debug:
+        msg: "Script permissions: {{ script_stat.stat.mode }}, Owner: {{ script_stat.stat.pw_name }}"

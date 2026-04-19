@@ -1,0 +1,158 @@
+# Python / Ansible
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.egg-info/
+*.egg
+dist/
+build/
+.eggs/
+
+# Ansible specific
+*.retry
+*.log
+*.tmp
+ansible.log
+.ansible/
+ansible.cfg (if it contains sensitive data)
+
+# Inventory files that might contain sensitive data
+inventory
+inventory/*
+!inventory.example
+*.ini
+hosts
+hosts.yml
+!hosts.example.yml
+
+# Vault files
+*.vault
+*.vault.yml
+.vault_pass
+vault_pass.txt
+vault_password
+
+# Sensitive data
+secrets.yml
+*.secret
+*.secrets
+passwords.yml
+credentials.yml
+*.pem
+*.key
+*.crt
+*.p12
+
+# Role specific
+roles/*/files/*.key
+roles/*/files/*.pem
+roles/*/vars/secrets.yml
+roles/*/vars/vault.yml
+
+# Collection files
+collections/
+~ansible_collections/
+
+# Environment files
+.env
+.env.local
+.venv/
+venv/
+env/
+virtualenv/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.project
+.pydevproject
+.settings/
+
+# Backup files
+*.backup
+*.bak
+*.old
+*.orig
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+*.cache
+.cache/
+
+# Test files
+test/
+tests/
+*.test.yml
+*.tests.yml
+
+# Documentation build
+docs/_build/
+site/
+
+# Local configuration
+local.yml
+local_inventory
+custom_vars.yml
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+
+
+
+
+
+
+
+
+
+For a more specific Ansible project, you might also add:
+# If you're using specific tools
+.terraform/
+*.tfstate
+*.tfstate.*
+.terragrunt-cache/
+
+# Molecule test files
+.molecule/
+molecule/*/__pycache__/
+molecule/*/.molecule/
+
+# Vagrant
+.vagrant/
+
+# Docker
+.docker/
+docker-compose.override.yml
+
+# Logs
+logs/
+*.log
+ansible_debug.log
+
+# SSH keys
+*.ssh/
+id_rsa*
+id_ecdsa*
+id_ed25519*
+
+# GPG keys
+*.gpg
+*.asc
+
+# Ansible Galaxy
+requirements.yml.downloaded/
+
+
+
+

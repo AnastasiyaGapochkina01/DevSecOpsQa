@@ -1,0 +1,63 @@
+---
+- name: Install and configure rsync
+  hosts: all
+  become: yes
+  vars:
+    backup_path: "/opt/backups"
+    rsync_user: "backuper"
+    log_level: "info"  # Change to "debug" for debug logging
+
+  tasks:
+    - name: Install rsync
+      apt:
+        name: rsync
+        state: present
+        update_cache: yes
+
+    - name: Create /etc/rsync.d directory with 755 permissions
+      file:
+        path: /etc/rsync.d
+        state: directory
+        mode: '0755'
+        owner: root
+        group: root
+
+    - name: Create rsync secrets file
+      copy:
+        content: |
+          # Rsync secrets file
+          # Format: username:password
+          {{ rsync_user }}:{{ 'backup_password_123' | password_hash('sha512') }}
+        dest: /etc/rsyncd.secrets
+        mode: '0600'
+        owner: root
+        group: root
+      when: false  # Disabled for security - set to true if needed
+
+    - name: Render rsync configuration from template
+      template:
+        src: rsync.conf.j2
+        dest: /etc/rsync.d/app.conf
+        mode: '0644'
+        owner: root
+        group: root
+      notify: restart rsync
+
+    - name: Create main rsync configuration
+      lineinfile:
+        path: /etc/default/rsync
+        regexp: '^RSYNC_ENABLE='
+        line: 'RSYNC_ENABLE=true'
+      notify: restart rsync
+
+    - name: Ensure rsync service is enabled and running
+      systemd:
+        name: rsync
+        state: started
+        enabled: yes
+
+  handlers:
+    - name: restart rsync
+      systemd:
+        name: rsync
+        state: restarted

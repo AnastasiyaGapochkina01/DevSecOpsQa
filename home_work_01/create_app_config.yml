@@ -1,0 +1,44 @@
+---
+- name: Create demo app directory structure and copy config
+  hosts: all
+  become: yes
+  tasks:
+    - name: Create directory /opt/demo_app/config
+      file:
+        path: /opt/demo_app/config
+        state: directory
+        mode: '0755'
+        owner: root
+        group: root
+
+    - name: Copy app.conf to /opt/demo_app/config/
+      copy:
+        content: |
+          # Demo Application Configuration File
+          # Created by Ansible
+          
+          [application]
+          name = DemoApp
+          version = 1.0.0
+          environment = production
+          
+          [database]
+          host = localhost
+          port = 5432
+          name = demo_db
+          user = demo_user
+          
+          [logging]
+          level = INFO
+          file = /var/log/demo_app/app.log
+          max_size_mb = 100
+          backup_count = 5
+          
+          [features]
+          debug_mode = false
+          api_timeout = 30
+          rate_limit = 100
+        dest: /opt/demo_app/config/app.conf
+        mode: '0644'
+        owner: root
+        group: root

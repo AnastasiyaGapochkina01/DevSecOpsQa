@@ -1,0 +1,18 @@
+# Rsync daemon configuration - managed by Ansible
+pid file = /var/run/rsyncd.pid
+port = 873
+log file = /var/log/rsyncd.log
+lock file = /var/run/rsyncd.lock
+use chroot = true
+reverse lookup = no
+
+[app_backup]
+path = {{ backup_path | default('/backup') }}
+comment = Backup directory for demo application
+read only = true
+auth users = {{ rsync_user | default('backupuser') }}
+secrets file = /etc/rsyncd.secrets
+{% if log_level == 'debug' %}
+log format = %t %a %m %f %i %o %l
+{% endif %}
+max connections = 10
